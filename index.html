@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão Fugitivo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        #simBtn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        #naoBtn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            position: absolute;
+            margin: 10px;
+        }
+        
+        .message {
+            margin: 20px 0;
+            font-size: 18px;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Tente clicar no botão "Não"!</h1>
+        <button id="simBtn">Sim 👍</button>
+        <div class="message" id="message"></div>
+    </div>
+    
+    <button id="naoBtn">Não 👎</button>
+
+    <script>
+        const simBtn = document.getElementById('simBtn');
+        const naoBtn = document.getElementById('naoBtn');
+        const message = document.getElementById('message');
+
+        function getRandomPosition() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const buttonWidth = naoBtn.offsetWidth;
+            const buttonHeight = naoBtn.offsetHeight;
+            
+            const maxX = windowWidth - buttonWidth - 20;
+            const maxY = windowHeight - buttonHeight - 20;
+            
+            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+            
+            return { x: randomX, y: randomY };
+        }
+
+        function moveNaoButton() {
+            const newPosition = getRandomPosition();
+            naoBtn.style.left = newPosition.x + 'px';
+            naoBtn.style.top = newPosition.y + 'px';
+        }
+
+        naoBtn.addEventListener('mouseover', moveNaoButton);
+        
+        naoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            moveNaoButton();
+            message.textContent = "🎉 Você conseguiu! Mas ele fugiu!";
+            message.style.color = "#f44336";
+            setTimeout(() => message.textContent = "", 2000);
+        });
+
+        simBtn.addEventListener('click', function() {
+            message.textContent = "🎊 Ótima escolha! Obrigado!";
+            message.style.color = "#4CAF50";
+        });
+
+        window.addEventListener('load', function() {
+            const pos = getRandomPosition();
+            naoBtn.style.left = pos.x + 'px';
+            naoBtn.style.top = pos.y + 'px';
+        });
+    </script>
+</body>
+</html>
